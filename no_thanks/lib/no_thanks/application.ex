@@ -12,9 +12,8 @@ defmodule NoThanks.Application do
       NoThanks.Repo,
       {DNSCluster, query: Application.get_env(:no_thanks, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: NoThanks.PubSub},
-      # Start a worker by calling: NoThanks.Worker.start_link(arg)
-      # {NoThanks.Worker, arg},
-      # Start to serve requests, typically the last entry
+      {Registry, keys: :unique, name: NoThanks.GameRegistry},
+      NoThanks.GameSupervisor,
       NoThanksWeb.Endpoint
     ]
 

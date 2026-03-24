@@ -8,6 +8,7 @@ defmodule NoThanksWeb.Router do
     plug :put_root_layout, html: {NoThanksWeb.Layouts, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug NoThanksWeb.Plugs.PlayerSession
   end
 
   pipeline :api do
@@ -17,7 +18,8 @@ defmodule NoThanksWeb.Router do
   scope "/", NoThanksWeb do
     pipe_through :browser
 
-    get "/", PageController, :home
+    live "/", LobbyLive
+    live "/games/:id", GameLive
   end
 
   # Other scopes may use custom stacks.

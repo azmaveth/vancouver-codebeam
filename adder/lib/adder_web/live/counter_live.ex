@@ -4,17 +4,15 @@ defmodule AdderWeb.CounterLive do
   alias Adder.Counter
 
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, :counter, Counter.new("0"))}
+    {:ok, Counter.mount("0", socket)}
   end
 
-  def handle_event("increment", _params, socket) do
-    counter = Counter.add(socket.assigns.counter, 1)
-    {:noreply, assign(socket, :counter, counter)}
+  def handle_event("counter:" <> event, _params, socket) do
+    {:noreply, Counter.update(event, socket)}
   end
 
-  def handle_event("decrement", _params, socket) do
-    counter = Counter.add(socket.assigns.counter, -1)
-    {:noreply, assign(socket, :counter, counter)}
+  def handle_event(_event, _params, socket) do
+    {:noreply, socket}
   end
 
   def render(assigns) do
@@ -41,13 +39,13 @@ defmodule AdderWeb.CounterLive do
     ~H"""
     <div class="flex gap-4">
       <button
-        phx-click="decrement"
+        phx-click="counter:decrement"
         class="rounded-lg bg-zinc-900 px-6 py-3 text-white hover:bg-zinc-700"
       >
         -1
       </button>
       <button
-        phx-click="increment"
+        phx-click="counter:increment"
         class="rounded-lg bg-zinc-900 px-6 py-3 text-white hover:bg-zinc-700"
       >
         +1

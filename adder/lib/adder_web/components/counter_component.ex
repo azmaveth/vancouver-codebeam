@@ -17,9 +17,10 @@ defmodule AdderWeb.CounterComponent do
 
   def render(assigns) do
     ~H"""
-    <.counter value={Counter.show(@counter)}>
+    <div class="flex flex-col items-center gap-8 py-16">
+      <h1 class="text-4xl font-bold">{Counter.show(@counter)}</h1>
       <.counter_controls />
-    </.counter>
+    </div>
     """
   end
 

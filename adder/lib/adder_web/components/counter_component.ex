@@ -1,36 +1,27 @@
 defmodule AdderWeb.CounterComponent do
-  use AdderWeb, :live_component
+  use Phoenix.Component
 
   alias Adder.Counter
 
-  def mount(socket) do
-    {:ok, Counter.mount("0", socket)}
+  def mount(socket, initial_value) do
+    assign(socket, :counter, Counter.new(initial_value))
   end
 
-  def handle_event("counter:" <> event, _params, socket) do
-    {:noreply, Counter.update(event, socket)}
+  def update_counter(socket, "increment") do
+    assign(socket, :counter, Counter.add(socket.assigns.counter, 1))
   end
 
-  def handle_event(_event, _params, socket) do
-    {:noreply, socket}
+  def update_counter(socket, "decrement") do
+    assign(socket, :counter, Counter.add(socket.assigns.counter, -1))
   end
 
-  def render(assigns) do
-    ~H"""
-    <div class="flex flex-col items-center gap-8 py-16">
-      <h1 class="text-4xl font-bold">{Counter.show(@counter)}</h1>
-      <.counter_controls />
-    </div>
-    """
-  end
-
-  attr :value, :string, required: true
+  attr :value, :integer, required: true
   slot :inner_block, required: true
 
   def counter(assigns) do
     ~H"""
     <div class="flex flex-col items-center gap-8 py-16">
-      <h1 class="text-4xl font-bold">{@value}</h1>
+      <h1 class="text-4xl font-bold">{Counter.show(@value)}</h1>
       {render_slot(@inner_block)}
     </div>
     """

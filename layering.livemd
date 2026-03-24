@@ -1,0 +1,43 @@
+# Construct Reduce Convert
+
+## Section
+
+```elixir
+input = "42"
+```
+
+```elixir
+input |> to_string()
+```
+
+```elixir
+defmodule CRC do
+  def new(input) do
+    String.to_integer(input)
+  end
+
+  def add(acc, item) do
+    acc + item
+  end
+
+  def show(acc) do
+    "The ants arrrrr is #{acc}"
+  end
+end
+```
+
+```elixir
+input 
+|> CRC.new() 
+|> CRC.add(1)
+|> CRC.add(1)
+|> CRC.add(-1)
+|> CRC.show()
+```
+
+```elixir
+list = [1, 1, -1]
+reducer = &CRC.add/2
+Enum.reduce(list, CRC.new(input), reducer)
+|> CRC.show()
+```
